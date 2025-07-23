@@ -1,16 +1,16 @@
 from flask import Flask, request, render_template_string
 import os
 
-app = Flask(__name__)
-
 HTML = """
 <h2>Configurá tu WiFi</h2>
 <form method="post">
   SSID: <input name="ssid"><br>
-  Password: <input name="password" type="password"><br>
+  Contraseña: <input name="password" type="password"><br>
   <button type="submit">Conectar</button>
 </form>
 """
+
+app = Flask(__name__)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -18,7 +18,8 @@ def index():
         ssid = request.form["ssid"]
         password = request.form["password"]
         os.system(f'nmcli dev wifi connect "{ssid}" password "{password}"')
-        return "Intentando conectar..."
+        return "Intentando conectar a la red WiFi..."
     return render_template_string(HTML)
 
-app.run(host="0.0.0.0", port=80)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8080)
